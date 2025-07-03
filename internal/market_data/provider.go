@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"os"
 )
 
 type Provider interface {
@@ -35,7 +36,12 @@ type GlobalQuote struct {
 	ChangePercent    string `json:"10. change percent"`
 }
 
-func NewAlphaVantageProvider(apiKey string) *AlphaVantageProvider {
+func NewAlphaVantageProvider() *AlphaVantageProvider {
+	apiKey := os.Getenv("ALPHA_VANTAGE_API_KEY")
+	if apiKey == "" {
+		fmt.Print("ALPHA_VANTAGE_API_KEY environment variable not set")
+	}
+
 	return &AlphaVantageProvider{
 		apiKey: apiKey,
 		baseURL: "https://www.alphavantage.co/query",

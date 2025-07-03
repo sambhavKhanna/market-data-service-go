@@ -5,7 +5,7 @@ import (
 )
 
 func TestAlphaVantageProvider_GetLatestPrice(t *testing.T) {
-	provider := NewAlphaVantageProvider("1234567890")
+	provider := NewAlphaVantageProvider()
 	price, err := provider.GetLatestPrice("TSLA")
 	if err != nil {
 		t.Fatalf("Error getting latest price: %v", err)
