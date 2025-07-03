@@ -10,14 +10,21 @@ import (
 	"sync"
 	"time"
 
+	"github.com/sambhavKhanna/market_data/infra/database"
 	"github.com/sambhavKhanna/market_data/internal/market_data"
 )
 
 func run(w io.Writer, ctx context.Context) error {
+
+	db, err := database.New()
+	if err != nil {
+		return fmt.Errorf("failed to connect to database: %w", err)
+	}
+
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
 	defer cancel()
 
-	server := market_data.NewServer()
+	server := market_data.NewServer(db)
 	httpServer := &http.Server{
 		Addr:    ":8080",
 		Handler: server,
